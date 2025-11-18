@@ -7,16 +7,15 @@ author: Mahirung (Developer)
 description: RPG 전투, 스킬, 파티, 던전, 강화, 룬 시스템을 관리하는 코어 플러그인입니다.
 
 # --- 의존성 플러그인 (필수) ---
-# MythicLib 및 ASWM 제거됨. FAWE 추가.
 depend:
   - MythicMobs
   - Vault
   - ItemsAdder
-  - FastAsyncWorldEdit # 던전 인스턴싱 대체
+  - FastAsyncWorldEdit
 
 # --- 명령어 등록 ---
 commands:
-  # 1. 메인 명령어 (MainCommand.java)
+  # 1. 메인 명령어
   rpgcore:
     description: RPGCore 플러그인의 메인 명령어입니다.
     usage: /rpgcore [reload]
@@ -24,29 +23,41 @@ commands:
     permission: rpgcore.admin.reload
     permission-message: 이 명령어를 실행할 권한이 없습니다.
 
-  # 2. 파티 명령어 (PartyCommand.java)
+  # 2. 파티 명령어
   party:
     description: 파티 관련 명령어를 실행합니다.
     usage: /party [create|invite|accept|leave|...]
     aliases: [p, 파티]
 
-  # 3. 직업 명령어 (ClassCommand.java)
+  # 3. 직업 명령어
   class:
     description: 직업 선택 GUI를 엽니다.
     usage: /class
     aliases: [직업, classes]
 
-  # 4. 던전 명령어 (DungeonCommand.java)
+  # 4. 던전 명령어
   dungeon:
     description: 던전 관련 명령어를 실행합니다.
     usage: /dungeon [enter|list|exit]
     aliases: [던전, d]
 
-  # 5. 재련 명령어 (RefineCommand.java)
+  # 5. 재련 명령어
   refine:
     description: 광물 재련 GUI를 엽니다.
     usage: /refine
     aliases: [재련]
+
+  # [추가됨] 6. 강화 명령어 (오류 해결)
+  enhance:
+    description: 장비 강화 GUI를 엽니다.
+    usage: /enhance
+    aliases: [강화]
+
+  # [추가됨] 7. 데미지 스킨 명령어 (오류 해결)
+  damageskin:
+    description: 데미지 스킨 선택 GUI를 엽니다.
+    usage: /damageskin
+    aliases: [스킨, 스킨선택]
 
 # --- 권한 설정 ---
 permissions:

@@ -1,66 +1,33 @@
-# RPGCore 플러그인의 메인 설정 파일 (config.yml)
+# RPGCore 메인 설정 (config.yml)
 
-# --- 데이터 저장 방식 ---
 storage:
   type: YAML
 
-# --- 로비 위치 (DungeonManager) ---
+# 로비 위치 (던전 퇴장 시 이동)
 lobby-location:
-  world: "world" # 로비 월드 이름
+  world: "world"
   x: 0.5
   y: 65.0
   z: 0.5
   yaw: 0.0
   pitch: 0.0
 
-# --- 마나 재생 시스템 (PlayerDataManager) ---
+# 마나 재생 설정
 mana-regeneration:
-  # 스케줄러 실행 간격 (틱 단위). 20틱 = 1초.
-  interval-ticks: 20 
-  
-  # interval-ticks 간격마다 회복되는 마나의 양.
-  rate-per-tick: 2.5 # 예: 1초마다 2.5 마나 회복
+  interval-ticks: 20 # 1초마다
+  rate-per-tick: 5.0 # 5 마나 회복
 
-# --- 직업 및 경험치 시스템 (ClassManager) ---
-# MythicMobs 몬스터 ID별로 획득할 경험치를 설정합니다.
+# 몹 처치 경험치 (MythicMobs ID 기준)
 mob-experience:
   SkeletonKing: 1000.0
   GoblinScout: 15.0
   OrcWarrior: 80.0
+  MushroomKing: 500.0
+  GiantZombie: 200.0
 
-# --- 데미지 스킨 시스템 (DamageSkinManager) ---
+# 데미지 스킨 설정
 damage-skins:
   enable: true
-  skins:
-    # 1. 기본 스킨 (항상 보유)
-    default:
-      display-name: "&f기본 스킨"
-      gui-icon:
-        material: "IRON_SWORD"
-        custom-model-data: 0
-      format:
-        normal: "&c-&f%damage%"
-        critical: "&6*&e%damage%&6*"
-      ticket-id: null 
-      
-    # 2. 파이어 스킨 (교환권 필요)
-    fire:
-      display-name: "&6파이어 스킨"
-      gui-icon:
-        material: "BLAZE_POWDER"
-        custom-model-data: 0
-      format:
-        normal: "&c-&6%damage%"
-        critical: "&4🔥 &c%damage% &4🔥"
-      ticket-id: "itemsadder:fire_skin_ticket" 
-      
-    # 3. 워터 스킨 (교환권 필요)
-    water:
-      display-name: "&b워터 스킨"
-      gui-icon:
-        material: "HEART_OF_THE_SEA"
-        custom-model-data: 0
-      format:
-        normal: "&9-&b%damage%"
-        critical: "&3💧 &b%damage% &3💧"
-      ticket-id: "itemsadder:water_skin_ticket"
+  font-offset-x: 0.25
+  font-offset-y: 0.5
+  display-duration-ticks: 20
