@@ -8,13 +8,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 던전 관련 명령어 (/dungeon)
+ * - /dungeon list : 던전 목록 보기
+ * - /dungeon enter <id> : 던전 입장
+ * - /dungeon exit : 던전 퇴장
+ */
 public class DungeonCommand implements CommandExecutor, TabCompleter {
 
     private final RPGCore plugin;
@@ -34,88 +38,61 @@ public class DungeonCommand implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        // 권한 체크
-        if (!player.hasPermission("rpgcore.dungeon.use")) {
-            player.sendMessage(ChatUtil.format("&c[RPGCore] &f이 명령어를 실행할 권한이 없습니다."));
-            return true;
-        }
-
         if (args.length == 0) {
-            sendHelpMessage(player);
+            sendHelp(player);
             return true;
         }
 
-        String subCommand = args[0].toLowerCase();
+        String sub = args[0].toLowerCase();
+        switch (sub) {
+            case "list":
+                dungeonManager.showDungeonList(player);
+                break;
 
-        try {
-            switch (subCommand) {
-                case "enter":
-                case "입장":
-                    handleDungeonEnter(player, args);
-                    break;
-                case "list":
-                    dungeonManager.showDungeonList(player);
-                    break;
-                case "exit":
-                case "나가기":
-                    dungeonManager.exitDungeon(player);
-                    break;
-                default:
-                    sendHelpMessage(player);
-                    break;
-            }
-        } catch (Exception e) {
-            player.sendMessage(ChatUtil.format("&c[Dungeon] &f명령어 실행 중 오류가 발생했습니다. 관리자에게 문의하세요."));
-            plugin.getLogger().severe("[DungeonCommand] 오류 발생: " + e.getMessage());
-            e.printStackTrace();
+            case "enter":
+                if (args.length < 2) {
+                    player.sendMessage(ChatUtil.format("&c[Dungeon] &f입장할 던전 ID를 입력하세요."));
+                    return true;
+                }
+                String dungeonId = args[1];
+                dungeonManager.attemptEnterDungeon(player, dungeonId);
+                break;
+
+            case "exit":
+                dungeonManager.exitDungeon(player);
+                break;
+
+            default:
+                sendHelp(player);
+                break;
         }
-
         return true;
     }
 
-    private void handleDungeonEnter(Player player, String[] args) {
-        if (args.length < 2) {
-            player.sendMessage(ChatUtil.format("&c[Dungeon] &f사용법: /dungeon enter <던전_ID>"));
-            return;
-        }
-        String dungeonId = args[1];
-        dungeonManager.attemptEnterDungeon(player, dungeonId);
-    }
-    
-    private void sendHelpMessage(Player player) {
-        player.sendMessage(ChatUtil.format("&a===== [ RPGCore 던전 도움말 ] ====="));
-        player.sendMessage(ChatUtil.format("&e/dungeon enter <던전_ID> &7- 해당 ID의 던전에 입장을 시도합니다."));
-        player.sendMessage(ChatUtil.format("&e/dungeon list &7- 입장 가능한 던전 목록을 봅니다."));
-        player.sendMessage(ChatUtil.format("&e/dungeon exit &7- 현재 있는 던전에서 나갑니다."));
-        player.sendMessage(ChatUtil.format("&a================================="));
+    private void sendHelp(Player player) {
+        player.sendMessage(ChatUtil.format("&a===== [ Dungeon 명령어 도움말 ] ====="));
+        player.sendMessage(ChatUtil.format("&e/dungeon list &7- 던전 목록 보기"));
+        player.sendMessage(ChatUtil.format("&e/dungeon enter <id> &7- 던전 입장"));
+        player.sendMessage(ChatUtil.format("&e/dungeon exit &7- 던전 퇴장"));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = new ArrayList<>();
-
-        if (!(sender instanceof Player)) {
-            return completions;
-        }
-
+        if (!(sender instanceof Player)) return Collections.emptyList();
         Player player = (Player) sender;
 
-        if (!player.hasPermission("rpgcore.dungeon.use")) {
-            return completions;
-        }
-
         if (args.length == 1) {
-            List<String> subCommands = Arrays.asList("enter", "list", "exit");
-            StringUtil.copyPartialMatches(args[0], subCommands, completions);
-            Collections.sort(completions);
-            return completions;
+            List<String> subs = new ArrayList<>();
+            subs.add("list");
+            subs.add("enter");
+            subs.add("exit");
+            return subs;
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("enter")) {
-            List<String> dungeonIds = dungeonManager.getAllDungeonIds();
-            StringUtil.copyPartialMatches(args[1], dungeonIds, completions);
-            return completions;
+            return new ArrayList<>(dungeonManager.getAllDungeonIds());
         }
-        return completions;
+
+        return Collections.emptyList();
     }
 }
