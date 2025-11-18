@@ -4,7 +4,7 @@ D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\DungeonCom
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\EnhanceCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\MainCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\PartyCommand.java
-D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\RefineCommand.java
+D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\RefineManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\RPGCoreCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\data\PlayerData.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\data\Storage.java
