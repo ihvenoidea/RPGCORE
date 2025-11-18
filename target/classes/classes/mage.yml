@@ -1,0 +1,73 @@
+# "mage" (파일 이름 = 직업 ID) 직업 설정 파일
+
+# 1. 직업 선택 GUI (ClassSelectorGUI)에 표시될 아이콘 정보
+gui-icon:
+  display-name: "&b[마법사]"
+  material: "BLAZE_ROD"
+  # (선택) ItemsAdder의 CustomModelData
+  # custom-model-data: 10002
+  lore:
+    - "&7원소의 힘을 다루며"
+    - "&7강력한 마법을 사용하는 원거리 전문가입니다."
+    - ""
+    - "&a[능력치 보너스]"
+    - "&f- 공격력: 낮음"
+    - "&f- 방어력: 낮음"
+    - "&f- 마나: 매우 높음"
+    - ""
+    - "&e클릭하여 이 직업을 선택합니다."
+
+# 2. 직업 전용 무기 (직업 선택 시 지급 - ClassManager)
+weapon:
+  material: "BLAZE_ROD"
+  display-name: "&b마법사의 기본 지팡이"
+  # (중요) ClassManager가 "직업 전용 무기"임을 식별하기 위한 NBT 태그
+  nbt:
+    class_weapon_id: "mage"
+    # (선택) 부가적인 NBT
+    # Unbreakable: true
+  lore:
+    - "&7마법사만이 사용할 수 있는 지팡이입니다."
+    - "&7쉬프트 + 클릭으로 스킬을 사용합니다."
+
+# 3. 기본 스탯 (1레벨 기준 - ClassManager)
+base-stats:
+  attack: 5.0      # 전사(10)보다 낮음
+  max-mana: 200.0    # 전사(50)보다 높음
+  defense: 5.0     # 전사(15)보다 낮음
+  crit-chance: 0.05  # 5%
+  crit-damage: 0.50  # 50% (마법사는 치명타 피해가 높음)
+
+# 4. 레벨당 자동 상승 스탯 (A안 - ClassManager)
+stats-per-level:
+  attack: 0.5      # 전사(2.0)보다 낮음
+  max-mana: 5.0      # 전사(1.5)보다 높음
+  defense: 0.5     # 전사(1.0)보다 낮음
+  crit-chance: 0.002 # 0.2%
+  crit-damage: 0.005 # 0.5%
+
+# 5. 스킬 정보 (SkillManager)
+skills:
+  # 5-1. 기본 공격 (좌클릭) - (예: 파이어볼)
+  basic-attack:
+    mythic-skill-id: "MageBasicFireball" 
+    mana-cost: 5.0 # 기본 공격도 마나 소모
+    cooldown: 1.0 # 1초
+  
+  # 5-2. 1번 스킬 (우클릭) - 5레벨 해금
+  skill-1:
+    mythic-skill-id: "MageIceShard"
+    mana-cost: 30.0
+    cooldown: 5.0 # 5초 (쿨타임이 짧은 견제기)
+  
+  # 5-3. 2번 스킬 (쉬프트+좌클릭) - 10레벨 해금
+  skill-2:
+    mythic-skill-id: "MageTeleport"
+    mana-cost: 40.0
+    cooldown: 12.0 # 12초 (생존기)
+
+  # 5-4. 3번 스킬 (쉬프트+우클릭) - 20레벨 해금
+  skill-3:
+    mythic-skill-id: "MageMeteor"
+    mana-cost: 100.0
+    cooldown: 30.0 # 30초 (궁극기)

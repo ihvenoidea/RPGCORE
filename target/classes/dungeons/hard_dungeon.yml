@@ -1,0 +1,23 @@
+# hard_dungeon.yml
+id: hard_dungeon
+display-name: "★★★ 고난의 동굴"
+
+# FAWE/WorldEdit 스키마틱 파일 이름 (plugins/WorldEdit/schematics/ 폴더에 있어야 함)
+schematic-name: "easy_cave.schem"
+
+# 던전 인스턴스가 생성될 월드 이름 (이미 존재하는 월드여야 함)
+instance-world: "world" # 또는 'dungeon_instance_static' (사용자님의 설정에 따라 다름)
+
+# 입장 레벨 제한 설정 (테스트를 위해 높게 설정)
+level-limit:
+  min: 50 # 최소 레벨 50
+  max: 100 
+  
+# 던전 보상 및 몬스터 설정 (선택 사항 - MythicMobs 설정에 따라)
+monsters:
+  - id: 'GiantZombie'
+    amount: 5
+    
+reward:
+  - item: 'mythicitems:hard_core_fragment'
+    chance: 0.1

@@ -1,0 +1,142 @@
+# RPGCore 광물 재련 설정 (refining.yml)
+
+# 1. 재련 소요 시간 정의 (기획안 5번)
+# (단위: 초)
+durations:
+  hour: 3600      # 1시간 (3600초)
+  half_hour: 1800 # 30분 (1800초)
+  twenty_min: 1200  # 20분 (1200초)
+  five_min: 300     # 5분 (300초)
+
+# 2. 재련 레시피 목록 (RefineManager가 로드)
+# (레시피 ID는 RefineManager에서 내부적으로만 사용됩니다)
+recipes:
+  # --- 1시간 소요 그룹 ---
+  coal_refine:
+    input:
+      material: "COAL"
+      amount: 64 # (필요 개수 - config 수정 가능)
+    catalyst: # '재련권' 아이템 정의 (예: ItemsAdder ID)
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" } # (예시) ItemsAdder의 '재련권' ID
+    result: # 결과물 '강화 재료' 정의 (예: 하급 재료)
+      material: "IRON_NUGGET"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_low" }
+    duration-key: "hour" # (durations 섹션의 'hour' 키 참조)
+
+  copper_refine:
+    input:
+      material: "COPPER_INGOT"
+      amount: 64
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "IRON_NUGGET"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_low" }
+    duration-key: "hour"
+
+  iron_refine:
+    input:
+      material: "IRON_INGOT"
+      amount: 64
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "IRON_INGOT" # (예시) 중급 재료
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_mid" }
+    duration-key: "hour"
+
+  redstone_refine:
+    input:
+      material: "REDSTONE"
+      amount: 64
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "IRON_INGOT"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_mid" }
+    duration-key: "hour"
+
+  # --- 30분 소요 그룹 ---
+  gold_refine:
+    input:
+      material: "GOLD_INGOT"
+      amount: 48
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "GOLD_INGOT"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_mid_plus" }
+    duration-key: "half_hour"
+
+  lapis_refine:
+    input:
+      material: "LAPIS_LAZULI"
+      amount: 48
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "GOLD_INGOT"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_mid_plus" }
+    duration-key: "half_hour"
+
+  # --- 20분 소요 그룹 ---
+  diamond_refine:
+    input:
+      material: "DIAMOND"
+      amount: 32
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "DIAMOND"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_high" }
+    duration-key: "twenty_min"
+
+  emerald_refine:
+    input:
+      material: "EMERALD"
+      amount: 32
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "EMERALD"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_high" }
+    duration-key: "twenty_min"
+
+  # --- 5분 소요 그룹 ---
+  netherite_refine:
+    input:
+      material: "NETHERITE_INGOT"
+      amount: 16
+    catalyst:
+      material: "PAPER"
+      amount: 1
+      nbt: { "itemsadder_id": "refining_ticket" }
+    result:
+      material: "NETHERITE_INGOT"
+      amount: 1
+      nbt: { "rpgcore_item_id": "enhance_material_top" }
+    duration-key: "five_min"

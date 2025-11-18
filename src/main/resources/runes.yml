@@ -1,0 +1,76 @@
+# RPGCore 룬 시스템 설정 (runes.yml)
+
+# 1. 룬 해제 아이템 (RuneManager가 식별)
+# (ItemsAdder ID 또는 커스텀 NBT 키/값)
+removal-item:
+  itemsadder-id: "itemsadder:rune_remover_scroll"
+
+# 2. 룬 목록 (RuneManager가 로드)
+# 룬 ID (예: 'attack_rune_1')는 내부 식별용 키입니다.
+runes:
+  attack_rune_1:
+    # (중요) RuneManager가 룬 아이템을 식별할 ItemsAdder ID
+    itemsadder-id: "itemsadder:attack_rune_1"
+    
+    # 장착 가능한 장비 부위 (Material 이름에 포함되는 키워드)
+    # 기획안 7번: 룬마다 특정 장비에 사용
+    applicable-to:
+      - "SWORD"
+      - "AXE"
+      
+    # 부여 스탯 (PlayerData의 스탯 키와 일치해야 함)
+    # (RuneManager가 이 스탯을 읽어 PlayerData의 Bonus 스탯에 적용)
+    stats:
+      attack: 5.0 # 공격력 +5
+
+  defense_rune_1:
+    itemsadder-id: "itemsadder:defense_rune_1"
+    
+    # 갑옷 부위 (투구, 흉갑, 각반, 부츠)
+    applicable-to:
+      - "HELMET"
+      - "CHESTPLATE"
+      - "LEGGINGS"
+      - "BOOTS"
+      
+    stats:
+      defense: 10.0 # 방어력 +10
+
+  mana_rune_1:
+    itemsadder-id: "itemsadder:mana_rune_1"
+    
+    # 모든 부위 가능
+    applicable-to:
+      - "SWORD"
+      - "AXE"
+      - "HELMET"
+      - "CHESTPLATE"
+      - "LEGGINGS"
+      - "BOOTS"
+      
+    stats:
+      max-mana: 20.0 # 최대 마나 +20
+
+  crit_chance_rune_1:
+    itemsadder-id: "itemsadder:crit_chance_rune_1"
+    
+    # 무기, 투구
+    applicable-to:
+      - "SWORD"
+      - "AXE"
+      - "HELMET"
+      
+    stats:
+      crit-chance: 0.03 # 치명타 확률 +3%
+
+  crit_damage_rune_1:
+    itemsadder-id: "itemsadder:crit_damage_rune_1"
+    
+    # 무기, 흉갑
+    applicable-to:
+      - "SWORD"
+      - "AXE"
+      - "CHESTPLATE"
+      
+    stats:
+      crit-damage: 0.05 # 치명타 피해 +5%

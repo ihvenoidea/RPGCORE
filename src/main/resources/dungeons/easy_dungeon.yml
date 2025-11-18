@@ -1,0 +1,36 @@
+# "easy_dungeon" (파일 이름 = 던전 ID) 설정 파일
+
+# 1. 던전 이름 (DungeonCommand /list 등에 표시)
+display-name: "&a[초급] 버섯 동굴"
+
+# 2. 입장 레벨 제한
+level-limit:
+  min: 1
+  max: 10
+
+# [수정됨] FAWE/WorldEdit에 사용할 스키마틱 파일
+schematic-name: "easy_cave.schem" 
+
+# [추가됨] 던전 구조물을 붙여넣을 스태틱 인스턴스 월드
+# (이 월드는 FAWE를 사용하여 미리 생성되어 있어야 하며, 플레이어가 영구적으로 드나들 수 있습니다.)
+instance-world: "dungeon_instance_static"
+
+# 4. 던전 입장 시 스폰될 좌표
+# (DungeonManager는 이 좌표를 사용하여 플레이어를 텔레포트시키고,
+# 구조물 복사 시 이 좌표를 기준으로 상대적 스폰 위치를 계산합니다.)
+spawn-point:
+  x: 100.5
+  y: 65.0
+  z: 50.5
+  yaw: 90.0
+  pitch: 0.0
+
+# 5. 던전 보스 정보
+boss:
+  mythic-mob-id: "MushroomKing"
+  # (참고: 보스 스폰 좌표는 schematic 내부에 포함되어 있거나,
+  # paste-location을 기준으로 상대 좌표를 계산해야 합니다.)
+  spawn-location:
+    x: 200.5
+    y: 70.0
+    z: 55.5

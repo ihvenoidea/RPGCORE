@@ -1,0 +1,76 @@
+# "warrior" (파일 이름 = 직업 ID) 직업 설정 파일
+
+# 1. 직업 선택 GUI (ClassSelectorGUI)에 표시될 아이콘 정보
+gui-icon:
+  display-name: "&c[전사]"
+  material: "IRON_SWORD"
+  # (선택) ItemsAdder의 CustomModelData
+  # custom-model-data: 10001
+  lore:
+    - "&7강인한 체력과 검술을 사용하는"
+    - "&7근거리 전투의 전문가입니다."
+    - ""
+    - "&a[능력치 보너스]"
+    - "&f- 공격력: 높음"
+    - "&f- 방어력: 높음"
+    - "&f- 마나: 낮음"
+    - ""
+    - "&e클릭하여 이 직업을 선택합니다."
+
+# 2. 직업 전용 무기 (직업 선택 시 지급 - ClassManager)
+# (ItemUtil이 이 섹션을 읽어 아이템을 생성합니다)
+weapon:
+  material: "IRON_SWORD"
+  display-name: "&c전사의 기본 검"
+  # (중요) ClassManager가 "직업 전용 무기"임을 식별하기 위한 NBT 태그
+  nbt:
+    class_weapon_id: "warrior"
+    # (선택) 부가적인 NBT (예: 부술 수 없음)
+    # Unbreakable: true
+  lore:
+    - "&7전사만이 사용할 수 있는 검입니다."
+    - "&7쉬프트 + 클릭으로 스킬을 사용합니다."
+
+# 3. 기본 스탯 (1레벨 기준 - ClassManager)
+base-stats:
+  attack: 10.0
+  max-mana: 50.0
+  defense: 15.0
+  crit-chance: 0.05 # 5%
+  crit-damage: 0.25 # 25% 추가 피해
+
+# 4. 레벨당 자동 상승 스탯 (A안 - ClassManager)
+stats-per-level:
+  attack: 2.0
+  max-mana: 1.5
+  defense: 1.0
+  crit-chance: 0.001 # 0.1%
+  crit-damage: 0.002 # 0.2%
+
+# 5. 스킬 정보 (SkillManager)
+# (SkillManager가 이 섹션을 읽어 MythicLib 스킬을 발동시킵니다)
+skills:
+  # 5-1. 기본 공격 (좌클릭)
+  basic-attack:
+    # MythicLib/MythicMobs에 등록된 스킬의 내부 ID
+    mythic-skill-id: "WarriorBasicAttack" 
+    mana-cost: 0.0
+    cooldown: 0.5 # 0.5초 (공격 속도)
+  
+  # 5-2. 1번 스킬 (우클릭) - 5레벨 해금
+  skill-1:
+    mythic-skill-id: "WarriorDashSlash"
+    mana-cost: 10.0
+    cooldown: 8.0 # 8초
+  
+  # 5-3. 2번 스킬 (쉬프트+좌클릭) - 10레벨 해금
+  skill-2:
+    mythic-skill-id: "WarriorSpin"
+    mana-cost: 20.0
+    cooldown: 15.0 # 15초
+
+  # 5-4. 3번 스킬 (쉬프트+우클릭) - 20레벨 해금
+  skill-3:
+    mythic-skill-id: "WarriorExecute"
+    mana-cost: 30.0
+    cooldown: 25.0 # 25초

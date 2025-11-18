@@ -1,0 +1,91 @@
+# RPGCore 플러그인의 모든 메시지 설정 (messages.yml)
+# ChatUtil.format()을 통해 '&' 색상 코드를 지원합니다.
+
+# 1. 메시지 접두사 (Prefix)
+# (참고: 각 매니저/커맨드에서 이 prefix를 불러와 사용할 수 있습니다)
+prefix: "&a[RPGCore] &f"
+party-prefix: "&9[파티] &f"
+dungeon-prefix: "&6[던전] &f"
+enhance-prefix: "&e[강화] &f"
+class-prefix: "&b[직업] &f"
+skill-prefix: "&3[스킬] &f"
+
+# 2. 일반 오류 메시지
+no-permission: "&c이 명령어를 실행할 권한이 없습니다."
+player-only: "&c이 명령어는 플레이어만 사용할 수 있습니다."
+player-not-found: "&c'{0}' 플레이어를 찾을 수 없거나 오프라인입니다."
+data-loading: "&c데이터를 불러오는 중입니다. 잠시 후 다시 시도해주세요."
+error-occurred: "&c오류가 발생했습니다. 관리자에게 문의하세요."
+
+# 3. 파티 (PartyManager / PartyCommand)
+party-invite-sent: "{1}'{0}'님을 파티에 초대했습니다." # {0} = 대상, {1} = party-prefix
+party-invite-received: "{1}'{0}'님이 파티에 초대했습니다. (/party accept {0})" # {0} = 초대한 사람
+party-invite-none: "{1}받은 파티 초대가 없습니다."
+party-invite-expired: "{1}유효하지 않거나 만료된 초대입니다."
+party-joined: "{1}'{0}'님이 파티에 참가했습니다."
+party-left: "{1}'{0}'님이 파티를 떠났습니다."
+party-full: "{1}파티가 꽉 찼습니다. (최대 4명)"
+party-already-in: "{1}이미 다른 파티에 속해있습니다."
+party-not-in: "{1}속한 파티가 없습니다."
+party-leader-only: "{1}파티장만 실행할 수 있습니다."
+party-new-leader: "{1}'{0}'님이 새로운 파티장이 되었습니다."
+party-chat-on: "{1}파티 채팅 모드를 켰습니다."
+party-chat-off: "{1}파티 채팅 모드를 껐습니다."
+
+# 4. 직업 (ClassManager / ClassCommand / PlayerJoinListener)
+class-welcome-new: "{0}RPGCore의 세계에 오신 것을 환영합니다!"
+class-welcome-prompt: "&e/class &f명령어를 입력하여 당신의 직업을 선택해주세요."
+class-welcome-existing: "{0}데이터가 성공적으로 로드되었습니다. (Lv.{1})" # {1} = 레벨
+class-already-has: "{4}당신은 이미 '{0}' 직업을 가지고 있습니다." # {0} = 직업명
+class-select-success: "{4}당신은 ''{0}'' 직업을 선택했습니다!"
+class-level-up: "&a[레벨업!] &f축하합니다! {0} 레벨을 달성했습니다!"
+class-skill-unlocked: "&b[스킬] &f{0}이(가) 해금되었습니다!" # {0} = 스킬 이름
+
+# 5. 스킬 (SkillManager)
+skill-level-required: "{5}레벨 {0} 이상만 사용할 수 있습니다."
+skill-cooldown: "{5}쿨타임이 {0}초 남았습니다." # {0} = 남은 시간
+skill-no-mana: "{5}마나가 부족합니다. ({0}/{1})" # {0} = 현재 마나, {1} = 필요 마나
+
+# 6. 던전 (DungeonManager / DungeonCommand)
+dungeon-not-party: "{2}던전은 파티 상태로만 입장할 수 있습니다."
+dungeon-not-leader: "{2}파티장만 던전 입장을 신청할 수 있습니다."
+dungeon-already-in: "{2}이미 던전에 입장해 있는 상태입니다."
+dungeon-level-fail: "{2}파티원 '{0}'님이 레벨 제한({1}~{2})을 충족하지 못합니다."
+dungeon-cooldown-fail: "{2}파티원 '{0}'님이 던전 쿨타임이 ({1}분) 남았습니다."
+dungeon-enter-success: "{2}'{0}' 던전에 입장합니다!"
+dungeon-enter-loading: "{2}던전 인스턴스 생성 중... 잠시 기다려주세요."
+dungeon-enter-fail-load: "{2}템플릿 월드({0}) 로드 실패!"
+dungeon-enter-fail-clone: "{2}인스턴스 복제 실패!"
+dungeon-enter-fail-bukkit: "{2}Bukkit 월드 생성 실패!"
+dungeon-exit: "{2}던전에서 퇴장했습니다."
+dungeon-exit-forced: "{2}파티장이 퇴장하여 던전에서 자동으로 퇴장되었습니다."
+
+# 7. 강화 (EnhanceManager)
+enhance-fail-items: "{3}장비와 재료를 모두 올려주세요."
+enhance-fail-config: "{3}+{0} -> +{1} 강화를 진행할 수 없습니다. (설정 없음)"
+enhance-success: "{3}&a강화에 성공했습니다! (+{0})"
+enhance-fail: "{3}&e강화에 실패했습니다... (유지)"
+enhance-destroy: "{3}&c장비가 파괴되었습니다... (+{0})"
+succession-fail-items: "{3}'파괴된 장비'와 '새로운 장비'를 모두 올려주세요."
+succession-fail-proof: "{3}유효한 '파괴된 장비'가 아닙니다."
+succession-fail-type: "{3}'동일한 종류의 장비'가 아닙니다."
+succession-success: "{3}&a성공적으로 +{0} 장비의 능력치를 전승했습니다!"
+
+# 8. 재련 (RefineManager)
+refine-fail-recipe: "&c[재련] &f일치하는 재련 레시피가 없습니다."
+refine-start: "&a[재련] &f'{0}' 재련을 시작합니다! (완료까지 {1}분)"
+refine-claim-none: "&c[재련] &f아직 수령할 아이템이 없습니다."
+refine-claim-success: "&a[재련] &f'{0}' 아이템을 수령했습니다."
+
+# 9. 룬 (RuneManager)
+rune-fail-target: "&c[룬] &f룬을 장착할 장비가 아닙니다."
+rune-fail-applicable: "&c[룬] &f이 룬은 해당 장비에 장착할 수 없습니다."
+rune-fail-slot: "&c[룬] &f룬 슬롯이 꽉 찼습니다. (최대 2개)"
+rune-apply-success: "&a[룬] &f{0} 룬을 장착했습니다!"
+rune-remove-fail-none: "&c[룬] &f장비에 장착된 룬이 없습니다."
+rune-remove-success: "&e[룬] &f{0} 룬을 제거했습니다."
+
+# 10. 스킨 (DamageSkinManager)
+skin-apply-success: "&a[스킨] &f'{0}' 데미지 스킨을 적용했습니다."
+skin-ticket-invalid: "&c[스킨] &f유효하지 않은 스킨 교환권입니다."
+skin-ticket-success: "&a[스킨] &f'{0}' 데미지 스킨을 획득했습니다!"

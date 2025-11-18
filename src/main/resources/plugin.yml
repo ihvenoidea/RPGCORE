@@ -1,0 +1,65 @@
+# 플러그인의 기본 정보
+name: RPGCore
+version: 1.0.0-SNAPSHOT
+main: com.mahirung.rpgcore.RPGCore
+api-version: '1.21' # 대상 버전 1.21.4
+author: Mahirung (Developer)
+description: RPG 전투, 스킬, 파티, 던전, 강화, 룬 시스템을 관리하는 코어 플러그인입니다.
+
+# --- 의존성 플러그인 (필수) ---
+# MythicLib 및 ASWM 제거됨. FAWE 추가.
+depend:
+  - MythicMobs
+  - Vault
+  - ItemsAdder
+  - FastAsyncWorldEdit # 던전 인스턴싱 대체
+
+# --- 명령어 등록 ---
+commands:
+  # 1. 메인 명령어 (MainCommand.java)
+  rpgcore:
+    description: RPGCore 플러그인의 메인 명령어입니다.
+    usage: /rpgcore [reload]
+    aliases: [rpg]
+    permission: rpgcore.admin.reload
+    permission-message: 이 명령어를 실행할 권한이 없습니다.
+
+  # 2. 파티 명령어 (PartyCommand.java)
+  party:
+    description: 파티 관련 명령어를 실행합니다.
+    usage: /party [create|invite|accept|leave|...]
+    aliases: [p, 파티]
+
+  # 3. 직업 명령어 (ClassCommand.java)
+  class:
+    description: 직업 선택 GUI를 엽니다.
+    usage: /class
+    aliases: [직업, classes]
+
+  # 4. 던전 명령어 (DungeonCommand.java)
+  dungeon:
+    description: 던전 관련 명령어를 실행합니다.
+    usage: /dungeon [enter|list|exit]
+    aliases: [던전, d]
+
+  # 5. 재련 명령어 (RefineCommand.java)
+  refine:
+    description: 광물 재련 GUI를 엽니다.
+    usage: /refine
+    aliases: [재련]
+
+# --- 권한 설정 ---
+permissions:
+  rpgcore.admin:
+    description: RPGCore 플러그인의 모든 관리자 권한입니다.
+    default: op
+    children:
+      rpgcore.admin.reload: true
+  
+  rpgcore.admin.reload:
+    description: /rpgcore reload 명령어를 사용할 수 있게 합니다.
+    default: op
+
+  rpgcore.user:
+    description: 플러그인의 기본 기능(파티, 직업, 던전)을 사용합니다.
+    default: true
