@@ -52,9 +52,12 @@ public class EntityDeathListener implements Listener {
         double totalExperience;
         Optional<MythicMob> mythicMobOpt = Optional.empty();
 
-        ActiveMob am = MythicBukkit.inst().getMobManager().getMythicMobInstance(victim);
-        if (am != null) {
-            mythicMobOpt = Optional.ofNullable(am.getType());
+        // MythicMobs 인스턴스 안전하게 확인
+        if (MythicBukkit.inst().getMobManager().isActiveMob(victim.getUniqueId())) {
+            ActiveMob am = MythicBukkit.inst().getMobManager().getMythicMobInstance(victim);
+            if (am != null) {
+                mythicMobOpt = Optional.ofNullable(am.getType());
+            }
         }
 
         if (mythicMobOpt.isPresent()) {
@@ -85,13 +88,16 @@ public class EntityDeathListener implements Listener {
         List<ItemStack> drops = new ArrayList<>(event.getDrops());
         event.getDrops().clear();
 
-        Player receiver = killer;
+        Player receiverTemp = killer;
         if (isInParty) {
             Player topDealer = partyManager.getTopDealerPlayer(event.getEntity());
             if (topDealer != null) {
-                receiver = topDealer;
+                receiverTemp = topDealer;
             }
         }
+        
+        // [Fix] 람다식 내부에서 사용하기 위해 final 변수에 할당 (Effectively Final 보장)
+        final Player receiver = receiverTemp;
 
         if (receiver.isOnline()) {
             // 인벤토리에 넣고 남은 아이템은 땅에 드롭
