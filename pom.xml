@@ -42,6 +42,12 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>com.mahirung.rpgcore.libs.hikari</shadedPattern>
+                                </relocation>
+                                </relocations>
                         </configuration>
                     </execution>
                 </executions>

@@ -31,7 +31,10 @@ public class DatabaseManager {
         String database = plugin.getConfig().getString("database.database");
 
         HikariConfig config = new HikariConfig();
-        // [변경] PostgreSQL URL 형식으로 변경
+        
+        // [추가됨] 드라이버 클래스를 강제로 지정 (오류 해결의 핵심!)
+        config.setDriverClassName("org.postgresql.Driver");
+        
         config.setJdbcUrl("jdbc:postgresql://" + host + ":" + port + "/" + database + "?sslmode=require");
         config.setUsername(user);
         config.setPassword(password);
@@ -54,7 +57,6 @@ public class DatabaseManager {
     private void createTables() {
         if (dataSource == null) return;
 
-        // [변경] PostgreSQL 문법 적용 (DOUBLE -> DOUBLE PRECISION)
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "CREATE TABLE IF NOT EXISTS rpg_player_data (" +
@@ -78,7 +80,6 @@ public class DatabaseManager {
     public void savePlayerData(PlayerData data) {
         if (dataSource == null) return;
 
-        // [변경] MySQL의 ON DUPLICATE KEY -> PostgreSQL의 ON CONFLICT 로 변경
         String sql = "INSERT INTO rpg_player_data " +
                      "(uuid, player_class, level, exp, base_attack, base_defense, base_mana, current_mana) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?) " +
@@ -99,7 +100,7 @@ public class DatabaseManager {
             ps.setString(2, data.getPlayerClass());
             ps.setInt(3, data.getLevel());
             ps.setDouble(4, data.getCurrentExp());
-            ps.setDouble(5, data.getBaseAttack()); 
+            ps.setDouble(5, data.getBaseAttack());
             ps.setDouble(6, data.getBaseDefense());
             ps.setDouble(7, data.getBaseMaxMana());
             ps.setDouble(8, data.getCurrentMana());

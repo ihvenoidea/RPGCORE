@@ -5,10 +5,10 @@
 database:
   enabled: true
   # 방금 찾아주신 주소입니다!
-  host: "db.gswjhopvmqemgnvpgnga.supabase.co"
+  host: "aws-1-ap-northeast-2.pooler.supabase.com"
   port: 5432
   database: "postgres"
-  user: "postgres"
+  user: "postgres.gswjhopvmqemgnvpgnga"
   
   # [중요] 아까 프로젝트 만들 때 설정한 비밀번호를 여기에 적으세요!
   password: "rladudwo7@"
