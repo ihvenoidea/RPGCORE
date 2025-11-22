@@ -1,9 +1,7 @@
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\ClassCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\DamageSkinCommand.java
-D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\DungeonCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\EnhanceCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\MainCommand.java
-D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\PartyCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\RefineCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\commands\RPGCoreCommand.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\data\PlayerData.java
@@ -12,6 +10,7 @@ D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\gui\ClassSelectorGU
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\gui\DamageSkinGUI.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\gui\EnhanceGUI.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\gui\RefineGUI.java
+D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\hooks\RPGCoreExpansion.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\listeners\EntityDamageListener.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\listeners\EntityDeathListener.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\listeners\InventoryClickListener.java
@@ -25,10 +24,10 @@ D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\listeners\PlayerMov
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\listeners\PlayerQuitListener.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\ClassManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\ConfigManager.java
+D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\DamageLogManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\DamageSkinManager.java
-D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\DungeonManager.java
+D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\DatabaseManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\EnhanceManager.java
-D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\PartyManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\PlayerDataManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\RefineManager.java
 D:\minecraft\havenrpgcore\src\main\java\com\mahirung\rpgcore\managers\RuneManager.java

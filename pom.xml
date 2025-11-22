@@ -20,7 +20,6 @@
 
     <build>
         <plugins>
-            <!-- Java 컴파일러 설정 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -31,7 +30,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Shade 플러그인 (의존성 병합) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -58,8 +56,14 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <!-- Spigot API -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
@@ -67,7 +71,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- MythicMobs -->
         <dependency>
             <groupId>io.lumine</groupId>
             <artifactId>MythicMobs</artifactId>
@@ -76,7 +79,6 @@
             <systemPath>D:/minecraft/havenrpgcore/libs/mythicmobs-5.11.0.jar</systemPath>
         </dependency>
 
-        <!-- Vault (전체 JAR만 사용) -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
@@ -85,7 +87,6 @@
             <systemPath>D:/minecraft/havenrpgcore/libs/Vault.jar</systemPath>
         </dependency>
 
-        <!-- ItemsAdder API -->
         <dependency>
             <groupId>dev.lone.itemsadder</groupId>
             <artifactId>api</artifactId>
@@ -94,13 +95,17 @@
             <systemPath>D:/minecraft/havenrpgcore/libs/itemsadder-api-4.0.14.jar</systemPath>
         </dependency>
 
-        <!-- WorldEdit Bukkit -->
         <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>7.3.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>D:/minecraft/havenrpgcore/libs/worldedit-bukkit-7.3.0-SNAPSHOT.jar</systemPath>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
