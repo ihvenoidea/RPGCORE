@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * 플레이어 데이터 객체
  * - 직업, 레벨, 경험치, 스탯, 마나 관리
- * - YML 파일 저장/로드
+ * - YML 파일 저장/로드 및 DB 저장 지원
  */
 public class PlayerData {
 
@@ -59,7 +59,7 @@ public class PlayerData {
         this.customNBT = new MemoryConfiguration();
     }
 
-    /** 기존 유저 생성자 */
+    /** 기존 유저 생성자 (파일 로드용) */
     public PlayerData(RPGCore plugin, UUID uuid, File playerFile) {
         this.plugin = plugin;
         this.uuid = uuid;
@@ -159,12 +159,18 @@ public class PlayerData {
     public double getRequiredExp() { return requiredExp; }
     public boolean isNewPlayer() { return isNewPlayer; }
 
+    // 총합 스탯 반환 (기본 + 보너스)
     public double getAttack() { return baseAttack + bonusAttack; }
     public double getMaxMana() { return baseMaxMana + bonusMaxMana; }
     public double getCurrentMana() { return currentMana; }
     public double getDefense() { return baseDefense + bonusDefense; }
     public double getCritChance() { return baseCritChance + bonusCritChance; }
     public double getCritDamage() { return baseCritDamage + bonusCritDamage; }
+
+    // --- [추가됨] 기본 스탯 Getter (DB 저장 시 사용) ---
+    public double getBaseAttack() { return baseAttack; }
+    public double getBaseDefense() { return baseDefense; }
+    public double getBaseMaxMana() { return baseMaxMana; }
 
     // --- Setters ---
     public void setPlayerClass(String playerClass) { this.playerClass = playerClass; }
@@ -181,6 +187,7 @@ public class PlayerData {
     public void setBaseDefense(double baseDefense) { this.baseDefense = baseDefense; }
     public void setBaseCritChance(double baseCritChance) { this.baseCritChance = baseCritChance; }
     public void setBaseCritDamage(double baseCritDamage) { this.baseCritDamage = baseCritDamage; }
+    public void setCurrentMana(double currentMana) { this.currentMana = currentMana; }
 
     public void setBonusAttack(double bonusAttack) { this.bonusAttack = bonusAttack; }
     public void setBonusMaxMana(double bonusMaxMana) { this.bonusMaxMana = bonusMaxMana; }

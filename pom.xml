@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
 
     <name>RPGCore</name>
-    <description>An RPG Core plugin for SpigotMC</description>
+    <description>An RPG Core plugin for SpigotMC (Commercial Edition)</description>
 
     <properties>
         <java.version>17</java.version>
@@ -99,6 +99,12 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>5.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.2</version>
         </dependency>
 
         <dependency>

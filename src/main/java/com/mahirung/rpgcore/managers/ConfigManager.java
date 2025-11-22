@@ -12,7 +12,7 @@ import java.util.Map;
  * 설정 매니저 클래스
  * - 기본 config.yml 및 messages.yml
  * - 커스텀 YML (refining, enhancing, runes)
- * - classes/, dungeons/ 폴더 기반 설정
+ * - classes/ 폴더 기반 설정
  */
 public class ConfigManager {
 
@@ -35,9 +35,9 @@ public class ConfigManager {
 
     // 폴더 기반 설정
     private final Map<String, FileConfiguration> classConfigs = new HashMap<>();
-    private final Map<String, FileConfiguration> dungeonConfigs = new HashMap<>();
+    // 던전 관련 Map 삭제됨
     private File classFolder;
-    private File dungeonFolder;
+    // 던전 관련 File 삭제됨
 
     public ConfigManager(RPGCore plugin) {
         this.plugin = plugin;
@@ -70,16 +70,18 @@ public class ConfigManager {
         classFolder = ensureFolder("classes", new String[]{"warrior.yml", "mage.yml"});
         loadConfigsFromFolder(classFolder, classConfigs);
 
-        // dungeons/
-        dungeonFolder = ensureFolder("dungeons", new String[]{"easy_dungeon.yml"});
-        loadConfigsFromFolder(dungeonFolder, dungeonConfigs);
+        // 던전 로드 로직 삭제됨 (여기서 에러가 발생했었음)
     }
 
     /** 파일 없으면 리소스에서 복사 */
     private File ensureFile(String name) {
         File file = new File(plugin.getDataFolder(), name);
         if (!file.exists()) {
-            plugin.saveResource(name, false);
+            try {
+                plugin.saveResource(name, false);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("리소스 파일을 찾을 수 없습니다: " + name);
+            }
         }
         return file;
     }
@@ -90,7 +92,11 @@ public class ConfigManager {
         if (!folder.exists()) {
             folder.mkdirs();
             for (String def : defaults) {
-                plugin.saveResource(folderName + "/" + def, false);
+                try {
+                    plugin.saveResource(folderName + "/" + def, false);
+                } catch (IllegalArgumentException e) {
+                    plugin.getLogger().warning("기본 리소스 파일을 찾을 수 없습니다: " + folderName + "/" + def);
+                }
             }
         }
         return folder;
@@ -99,6 +105,8 @@ public class ConfigManager {
     /** 폴더 내 모든 YML 로드 */
     private void loadConfigsFromFolder(File folder, Map<String, FileConfiguration> configMap) {
         configMap.clear();
+        if (folder == null || !folder.exists()) return;
+
         File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml"));
 
         if (files == null) {
@@ -119,13 +127,13 @@ public class ConfigManager {
         plugin.reloadConfig();
         mainConfig = plugin.getConfig();
 
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        refiningConfig = YamlConfiguration.loadConfiguration(refiningFile);
-        enhancingConfig = YamlConfiguration.loadConfiguration(enhancingFile);
-        runesConfig = YamlConfiguration.loadConfiguration(runesFile);
+        if (messagesFile != null) messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+        if (refiningFile != null) refiningConfig = YamlConfiguration.loadConfiguration(refiningFile);
+        if (enhancingFile != null) enhancingConfig = YamlConfiguration.loadConfiguration(enhancingFile);
+        if (runesFile != null) runesConfig = YamlConfiguration.loadConfiguration(runesFile);
 
         loadConfigsFromFolder(classFolder, classConfigs);
-        loadConfigsFromFolder(dungeonFolder, dungeonConfigs);
+        // 던전 리로드 로직 삭제됨
     }
 
     /** 외부에서 호출하는 reloadConfigs() → 내부적으로 reloadAllConfigs() 실행 */
@@ -141,5 +149,5 @@ public class ConfigManager {
     public FileConfiguration getRunesConfig() { return runesConfig; }
 
     public Map<String, FileConfiguration> getClassConfigs() { return classConfigs; }
-    public Map<String, FileConfiguration> getDungeonConfigs() { return dungeonConfigs; }
+    // 던전 Config Getter 삭제됨
 }

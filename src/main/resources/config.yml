@@ -1,29 +1,31 @@
 # RPGCore 메인 설정 (config.yml)
-# 상업용 서버 최적화 버전
+# 상업용 서버 최적화 버전 (Supabase/PostgreSQL 지원)
 
-# --- 데이터베이스 설정 (MySQL/MariaDB) ---
-# 대규모 서버를 위한 MySQL 연동 설정입니다.
+# --- 데이터베이스 설정 (Supabase) ---
 database:
-  enabled: true       # true: MySQL 사용, false: 로컬 파일(YAML) 사용
-  host: "localhost"
-  port: 3306
-  user: "root"
-  password: "password"
-  database: "rpgcore"
-  pool-size: 10       # HikariCP 커넥션 풀 크기 (동접자 수에 따라 조절 필요)
+  enabled: true
+  # 방금 찾아주신 주소입니다!
+  host: "db.gswjhopvmqemgnvpgnga.supabase.co"
+  port: 5432
+  database: "postgres"
+  user: "postgres"
+  
+  # [중요] 아까 프로젝트 만들 때 설정한 비밀번호를 여기에 적으세요!
+  password: "rladudwo7@"
+  
+  pool-size: 10
 
 # --- 게임플레이 밸런스 설정 ---
 gameplay:
-  defense-constant: 100.0      # 방어력 효율 상수 (수치가 높을수록 방어력 효율이 완만하게 증가)
-  memory-cleanup-interval: 300 # 메모리 정리 주기 (초). 5분마다 유효하지 않은 몹의 데미지 로그를 삭제합니다.
+  defense-constant: 100.0
+  memory-cleanup-interval: 300
 
 # --- 마나 재생 설정 ---
 mana-regeneration:
-  interval-ticks: 20 # 20틱 = 1초마다 재생
-  rate-per-tick: 5.0 # 1회 재생 시 회복량
+  interval-ticks: 20
+  rate-per-tick: 5.0
 
-# --- 몹 처치 경험치 (MythicMobs ID 기준) ---
-# MythicMobs 플러그인의 Internal Name과 정확히 일치해야 합니다.
+# --- 몹 처치 경험치 ---
 mob-experience:
   SkeletonKing: 1000.0
   GoblinScout: 15.0
