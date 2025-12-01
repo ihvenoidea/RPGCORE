@@ -9,15 +9,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
 /**
  * 장비 강화 시스템 매니저
- * - enhancing.yml 기반 강화 확률/비용 관리
- * - 장비 강화 및 실패 처리
- * - GUI 연동
+ * - GUI 상호작용 로직 수정 (아이템 장착 가능하도록)
  */
 public class EnhanceManager {
 
@@ -57,12 +56,11 @@ public class EnhanceManager {
         plugin.getLogger().info(enhanceCache.size() + "개의 강화 레벨 데이터를 로드했습니다.");
     }
 
-    /** GUI 열기 */
     public void openEnhanceGUI(Player player) {
         new EnhanceGUI(plugin).open(player);
     }
 
-    /** GUI 클릭 처리 */
+    /** GUI 클릭 처리 (수정됨) */
     public void handleGUIClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         int slot = event.getSlot();
@@ -70,20 +68,38 @@ public class EnhanceManager {
         // GUI 제목 확인
         if (!event.getView().getTitle().equals(EnhanceGUI.GUI_TITLE)) return;
 
+        // [Fix] 1. 내 인벤토리 클릭은 허용 (아이템 집기)
+        if (event.getClickedInventory() != null && event.getClickedInventory().getType() == InventoryType.PLAYER) {
+            event.setCancelled(false);
+            return;
+        }
+
+        // 2. GUI 내부 클릭은 기본적으로 취소 (장식 아이템 빼가기 방지)
         event.setCancelled(true);
 
-        // 강화 버튼 클릭
+        // [Fix] 3. 장비 올리는 슬롯은 허용 (아이템 놓기/빼기)
+        if (slot == EnhanceGUI.EQUIPMENT_SLOT) {
+            event.setCancelled(false);
+            return;
+        }
+
+        // 4. 강화 버튼 클릭 처리
         if (slot == EnhanceGUI.START_BUTTON_SLOT) {
             ItemStack equipment = event.getInventory().getItem(EnhanceGUI.EQUIPMENT_SLOT);
-            if (equipment == null) {
+            if (equipment == null || equipment.getType().isAir()) {
                 player.sendMessage(ChatUtil.format("&c[강화] &f강화할 장비를 올려주세요."));
                 return;
             }
             ItemStack result = attemptEnhance(player, equipment);
+            
+            // 결과 처리 (파괴 시 null이 오므로 슬롯 비우기)
             event.getInventory().setItem(EnhanceGUI.EQUIPMENT_SLOT, result);
+            
+            // 강화 후 플레이어 인벤토리 업데이트 (잔상 방지)
+            player.updateInventory();
         }
 
-        // 전승 버튼 클릭 (추후 구현)
+        // 전승 버튼 클릭
         if (slot == EnhanceGUI.SUCCESSION_BUTTON_SLOT) {
             player.sendMessage(ChatUtil.format("&e[전승] &f능력치 전승 기능은 아직 구현되지 않았습니다."));
         }
@@ -91,39 +107,51 @@ public class EnhanceManager {
 
     /** 장비 강화 시도 */
     public ItemStack attemptEnhance(Player player, ItemStack item) {
-        if (item == null) {
-            player.sendMessage(ChatUtil.format("&c[강화] &f강화할 아이템이 없습니다."));
-            return null;
-        }
+        if (item == null) return null;
 
         int currentLevel = ItemUtil.getNBTInt(item, "enhance_level");
-        EnhanceData data = enhanceCache.get(currentLevel + 1);
+        EnhanceData data = enhanceCache.get(currentLevel); // 현재 레벨의 '다음 단계' 정보를 가져와야 하는지, 현재 레벨 정보를 가져와야 하는지 로직 점검 필요.
+        // 보통 0강 -> 1강 갈때는 '0'번 키의 데이터를 씀.
+        // enhanceCache.get(currentLevel) 이 맞습니다. (0강일 때 levels.0 설정 사용)
+        
         if (data == null) {
-            player.sendMessage(ChatUtil.format("&c[강화] &f더 이상 강화할 수 없습니다."));
+            // 만약 10강인데 10번 데이터가 설정에 있다면 '10강 -> 11강' 시도임.
+            // 데이터가 없으면 만렙으로 간주
+            player.sendMessage(ChatUtil.format("&c[강화] &f더 이상 강화할 수 없습니다. (최고 레벨)"));
             return item;
         }
 
-        // TODO: 비용 차감 로직 (예: 골드, 재화 등)
+        // TODO: Vault 연동하여 비용 차감 코드 추가 권장
+        // if (!economy.has(player, data.getCost())) { ... return item; }
+
         Random random = new Random();
-        double roll = random.nextDouble();
+        double roll = random.nextDouble(); // 0.0 ~ 1.0
 
         if (roll <= data.getSuccessRate()) {
-            item = ItemUtil.setNBTInt(item, "enhance_level", currentLevel + 1);
-            player.sendMessage(ChatUtil.format("&a[강화 성공] &f아이템이 +{0} 레벨로 강화되었습니다!", currentLevel + 1));
+            // 성공
+            int nextLevel = currentLevel + 1;
+            item = ItemUtil.setNBTInt(item, "enhance_level", nextLevel);
+            // 이름 업데이트 (선택 사항)
+            // ItemMeta meta = item.getItemMeta();
+            // meta.setDisplayName("§b+" + nextLevel + " " + ...);
+            // item.setItemMeta(meta);
+            
+            player.sendMessage(ChatUtil.format("&a[강화 성공] &f아이템이 +{0} 레벨로 강화되었습니다!", nextLevel));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.2f);
         } else if (roll <= data.getSuccessRate() + data.getDestroyRate()) {
-            player.sendMessage(ChatUtil.format("&c[강화 실패] &f아이템이 파괴되었습니다."));
+            // 파괴
+            player.sendMessage(ChatUtil.format("&c[강화 실패] &f아이템이 파괴되었습니다 ㅠㅠ"));
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1f, 0.8f);
-            item = null; // 아이템 파괴
+            return null; // 아이템 삭제
         } else {
-            player.sendMessage(ChatUtil.format("&e[강화 실패] &f아이템 강화에 실패했습니다."));
+            // 실패 (유지)
+            player.sendMessage(ChatUtil.format("&e[강화 실패] &f강화에 실패했지만 아이템은 무사합니다."));
             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1f, 1f);
         }
 
         return item;
     }
 
-    /** 강화 단계별 데이터 */
     private static class EnhanceData {
         private final int level;
         private final double successRate;
@@ -136,10 +164,7 @@ public class EnhanceManager {
             this.destroyRate = destroyRate;
             this.cost = cost;
         }
-
-        public int getLevel() { return level; }
         public double getSuccessRate() { return successRate; }
         public double getDestroyRate() { return destroyRate; }
-        public int getCost() { return cost; }
     }
 }

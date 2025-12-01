@@ -9,8 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,19 +58,14 @@ public class RefineManager {
         }
     }
 
-    // [Fix] Command에서 사용하는 메소드 복구
-    public Set<String> getAllRecipeIds() {
-        return recipeCache.keySet();
-    }
+    public Set<String> getAllRecipeIds() { return recipeCache.keySet(); }
 
-    // [Fix] Command에서 사용하는 메소드 구현
     public void startRefineTask(Player player, String recipeId) {
         RefineRecipe recipe = recipeCache.get(recipeId);
         if (recipe == null) {
             player.sendMessage(ChatUtil.format("&c존재하지 않는 레시피입니다."));
             return;
         }
-        // 재료 검사는 생략하거나 여기서 수행 (커맨드 강제 시작용이라 가정)
         long endTime = System.currentTimeMillis() + recipe.getDurationMillis();
         activeTasks.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>())
                 .add(new ActiveRefineTask(recipeId, endTime));
@@ -78,7 +73,6 @@ public class RefineManager {
         player.sendMessage(ChatUtil.format("&a재련 시작: " + recipeId));
     }
 
-    // [Fix] public으로 변경
     public void handleClaimItem(Player player) {
         List<ActiveRefineTask> tasks = activeTasks.get(player.getUniqueId());
         if (tasks == null || tasks.isEmpty()) {
@@ -101,20 +95,51 @@ public class RefineManager {
         new RefineGUI(plugin, activeTasks.getOrDefault(player.getUniqueId(), new ArrayList<>())).open(player);
     }
 
+    /** GUI 클릭 처리 (수정됨) */
     public void handleGUIClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        event.setCancelled(true);
-        if (event.getSlot() == RefineGUI.START_BUTTON_SLOT) {
-            // GUI용 시작 로직 (간소화)
-            player.sendMessage("GUI에서 재료를 넣고 클릭하세요.");
-        } else if (event.getSlot() == RefineGUI.RESULT_SLOT) {
-            handleClaimItem(player);
-        } else if (event.getSlot() == RefineGUI.INPUT_SLOT || event.getSlot() == RefineGUI.CATALYST_SLOT) {
+
+        // [Fix] 1. 내 인벤토리 클릭 허용 (재료 집기)
+        if (event.getClickedInventory() != null && event.getClickedInventory().getType() == InventoryType.PLAYER) {
             event.setCancelled(false);
+            return;
+        }
+
+        // 2. GUI 내부 클릭 기본 취소
+        event.setCancelled(true);
+
+        int slot = event.getSlot();
+
+        // [Fix] 3. 재료(Input)와 촉매(Catalyst) 슬롯 허용
+        if (slot == RefineGUI.INPUT_SLOT || slot == RefineGUI.CATALYST_SLOT) {
+            event.setCancelled(false);
+            return;
+        }
+
+        // 4. 버튼 처리
+        if (slot == RefineGUI.START_BUTTON_SLOT) {
+            player.sendMessage("GUI 재련 시작 기능은 레시피 매칭 로직 구현이 필요합니다.");
+        } else if (slot == RefineGUI.RESULT_SLOT) {
+            handleClaimItem(player);
+            player.closeInventory();
         }
     }
 
-    private void loadActiveTasksFromFile() { /* 생략 가능하나 구현 유지 */ }
+    private void loadActiveTasksFromFile() {
+        if (!tasksConfig.contains("tasks")) return;
+        ConfigurationSection sec = tasksConfig.getConfigurationSection("tasks");
+        for (String uuidStr : sec.getKeys(false)) {
+            UUID uuid = UUID.fromString(uuidStr);
+            List<Map<?, ?>> list = sec.getMapList(uuidStr);
+            List<ActiveRefineTask> tasks = new ArrayList<>();
+            for (Map<?, ?> m : list) {
+                String rId = (String) m.get("recipeId");
+                long eTime = ((Number) m.get("endTime")).longValue();
+                tasks.add(new ActiveRefineTask(rId, eTime));
+            }
+            activeTasks.put(uuid, tasks);
+        }
+    }
 
     public void saveActiveTasksToFile() {
         tasksConfig.set("tasks", null);
@@ -153,6 +178,8 @@ public class RefineManager {
         public String getRecipeId() { return recipeId; }
         public long getEndTime() { return endTime; }
         public boolean isComplete() { return System.currentTimeMillis() >= endTime; }
+        
+        // [복구됨] 이 메서드가 없어서 에러가 났습니다. 다시 추가했습니다.
         public long getTimeLeft() { return Math.max(0, endTime - System.currentTimeMillis()); }
     }
 }
